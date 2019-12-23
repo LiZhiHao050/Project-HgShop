@@ -2,6 +2,7 @@ package com.lizhihao.hgshop.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author LZH
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     @RequestMapping("login")
+    @ResponseBody
     public String login() {
-        return "login";
+        return "";
     }
 
     @RequestMapping("index")
