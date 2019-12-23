@@ -10,4 +10,4 @@
 		<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
 		<script src="js/bootstrap.min.js" type="text/javascript"></script>
 		<script src="js/fotorama.js" type="text/javascript"></script>
-		<script src="js/custom.js"></script>n
+		<script src="js/custom.js"></script>
