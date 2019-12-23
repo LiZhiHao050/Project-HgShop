@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lizhihao.hgshop.dao.CategoryMapper">
+
+    <!--分类列表-->
+    <select id="getCategoryList" resultType="category">
+        SELECT
+            c1.id,
+            c1.name,
+            c2.name parentName
+        FROM
+            hg_category c1
+            LEFT JOIN hg_category c2
+            ON c1.parent_id = c2.id
+        <where>
+            <if test="name != null and name != ''">
+                AND c1.name like concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--通过ID查找数据-->
+    <select id="getCatById" resultType="category">
+        SELECT
+            c1.id,
+            c1.name,
+            c1.parent_id,
+            c2.name parentName
+        FROM hg_category c1 LEFT JOIN hg_category c2
+            ON c1.parent_id = c2.id
+        WHERE c1.id = #{id}
+    </select>
+
+    <resultMap id="categoryMap" type="category">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="childs" javaType="arrayList" ofType="Category">
+            <id column="c2_id" property="id"/>
+            <result column="c2_name" property="name"/>
+            <collection property="childs" javaType="arrayList" ofType="Category">
+                <id column="c3_id" property="id"/>
+                <result column="c3_name" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--三级分类树-->
+    <select id="getAllCategories" resultMap="categoryMap">
+        select c1.id,c1.name,c2.id c2_id,c2.name c2_name,c3.id c3_id, c3.name c3_name
+        from hg_category c1
+        left join hg_category c2
+        on c1.id=c2.parent_id
+        left join hg_category c3
+        on c2.id=c3.parent_id
+        where c1.parent_id=0
+    </select>
+
+
+    
+</mapper>

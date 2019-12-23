@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lizhihao.hgshop.dao.SpecMapper">
+
+    <resultMap id="specMap" type="spec">
+        <id property="id" column="id"/>
+        <result property="specName" column="spec_name"/>
+        <collection property="options" javaType="list" ofType="specOption">
+            <id property="id" column="so_id"/>
+            <result property="optionName" column="option_name"/>
+            <result property="specId" column="id"/>
+        </collection>
+    </resultMap>
+
+    <!--规格参数列表-->
+    <select id="specList" resultType="spec">
+        SELECT
+            s.id,
+            s.spec_name,
+            GROUP_CONCAT(so.option_name) optionNames
+        FROM hg_spec s JOIN hg_spec_option so
+        ON s.id = so.spec_id
+        <where>
+            <if test="specName != null and specName != ''">
+                s.spec_name like concat('%',#{specName},'%')
+            </if>
+        </where>
+        GROUP BY s.id
+    </select>
+
+    <!--通过ID查询-->
+    <select id="getSpecById" resultMap="specMap">
+        SELECT
+          s.id,
+          s.spec_name,
+          so.id so_id,
+          so.option_name
+        FROM hg_spec s join hg_spec_option so on s.id = so.spec_id
+        WHERE s.id = #{id}
+    </select>
+
+    <select id="selSpecs" resultType="spec">
+		select id,spec_name from hg_spec
+	</select>
+
+    <!--添加规格参数方法-->
+    <insert id="addSpec" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hg_spec (spec_name) VALUES (#{specName})
+    </insert>
+
+    <!--添加规格参数选项方法-->
+    <insert id="addSpecOption">
+        INSERT INTO hg_spec_option (spec_id, option_name) VALUES (#{specId},#{optionName})
+    </insert>
+
+    <!--修改规格参数方法-->
+    <update id="updSpec">
+        UPDATE hg_spec SET spec_name = #{specName} WHERE id = #{id}
+    </update>
+
+    <!--修改规格参数选项方法-->
+    <update id="updSepcOption">
+        UPDATE hg_spec_option SET option_name = #{optionName} WHERE id = #{id}
+    </update>
+
+
+    <delete id="delSpec">
+        DELETE FROM hg_spec WHERE id in (${id})
+    </delete>
+    
+    <select id="getSepcByIds" resultMap="specMap">
+        select s.id,s.spec_name,so.id so_id,so.option_name
+        from hg_spec s join hg_spec_option so on s.id=so.spec_id where s.id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getSpecBySpuIds" resultMap="specMap">
+        select distinct s.id,s.spec_name,so.id so_id,so.option_name
+        from hg_sku k join hg_sku_spec ks on k.id=ks.sku_id
+        join hg_spec s on ks.spec_id=s.id
+        join hg_spec_option so on ks.spec_option_id=so.id
+        where k.spu_id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

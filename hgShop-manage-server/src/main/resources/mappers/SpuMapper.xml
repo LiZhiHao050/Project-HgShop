@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lizhihao.hgshop.dao.SpuMapper">
+
+    <select id="spuList" resultType="spu">
+        SELECT
+            s.id,s.goods_name,
+            s.is_marketable,
+            b.name b_name,c.name c_name,
+            s.small_pic
+        FROM
+        hg_spu s JOIN hg_brand b ON s.brand_id = b.id
+        JOIN hg_category c ON s.category_id = c.id
+        <where>
+            <if test="categoryId != null and categoryId != ''">
+                and s.category_id = #{categoryId}
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                and s.goods_name like concat('%',#{goodsName},'%')
+            </if>
+            <if test="caption != null and caption != ''">
+                and s.caption like concat('%',#{caption},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getSpuById" resultType="spu">
+        SELECT
+            s.*,
+            c.name cName,
+            b.name bName
+        FROM
+        hg_spu s JOIN hg_brand b ON s.brand_id = b.id
+        JOIN hg_category c ON s.category_id = c.id
+        WHERE s.id = #{id}
+    </select>
+
+    <insert id="addSpu">
+		insert into hg_spu(goods_name,is_marketable,brand_id,caption,category_id,small_pic)
+		values (#{goodsName},#{isMarketable},#{brandId},#{caption},#{categoryId},#{smallPic})
+	</insert>
+
+    <update id="updateSpu">
+        update hg_spu set
+        <if test="goodsName!=null and goodsName!=''">
+            goods_name=#{goodsName},
+        </if>
+        <if test="caption!=null and caption!=''">
+            caption=#{caption},
+        </if>
+        <if test="brandId!=null">
+            brand_id=#{brandId},
+        </if>
+        <if test="categoryId!=null">
+            category_id=#{categoryId},
+        </if>
+        <if test="smallPic!=null and smallPic!=''">
+            small_pic=#{smallPic},
+        </if>
+        <if test="isMarketable!=null and isMarketable!=''">
+            is_marketable=#{isMarketable}
+        </if>
+        where id=#{id}
+    </update>
+
+
+
+    <select id="selSpuIdsBySearch" resultType="int">
+        SELECT p.id FROM
+        hg_sku k join hg_spu p on k.spu_id = p.id
+        left join hg_category c1 on p.category_id = c1.id
+        left join hg_category c2 on c1.parent_id = c2.id
+        left join hg_category c3 on c2.parent_id = c3.id
+        left join hg_brand b on p.brand_id = b.id
+        <!--<if test="optionIds != null">
+            <foreach collection="optionIds" index="i">
+                left join hg_sku_spec ks${i} on k.id = ks${i}.sku_id
+            </foreach>
+        </if>-->
+        <where>
+            <if test="goodsName != null and goodsName != ''">
+                and (k.title like concat('%',#{goodsName},'%') or
+                p.goods_name like concat('%',#{goodsName},'%') or
+                c1.name like concat('%',#{goodsName},'%') or
+                c2.name like concat('%',#{goodsName},'%') or
+                c3.name like concat('%',#{goodsName},'%') or
+                b.name like concat('%',#{goodsName},'%'))
+            </if>
+            <!--<if test="startPrice!=null and startPrice!=0 and endPrice!=null and endPrice!=0 ">
+                and k.price between #{startPrice} and #{endPrice}
+            </if>-->
+            <if test="brandId!=null">
+                and b.id =#{brandId}
+            </if>
+            <if test="categoryId!=null">
+                and c1.id =#{categoryId}
+            </if>
+            <!--<if test="optionIds!=null">
+                <foreach collection="optionIds" index="i" item="subList">
+                    and ks${i}.spec_option_id in
+                    <foreach collection="subList" open="(" close=")" separator="," item="optionId">
+                        #{optionId}
+                    </foreach>
+                </foreach>
+            </if>-->
+        </where>
+
+    </select>
+
+
+    <resultMap id="spuMap" type="spu">
+        <id column="id" property="id"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="category_id" property="categoryId"/>
+        <collection property="skuList" javaType="list" ofType="sku">
+            <id column="k_id" property="id"/>
+            <result column="title" property="title"/>
+            <result column="image" property="image"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selSpuByIds" resultMap="spuMap">
+        select p.id, p.brand_id, p.category_id, k.id k_id, k.title, k.price, k.image
+        from hg_spu p join hg_sku k on p.id = k.spu_id
+        where p.id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selCategoryBySpuIds" resultType="category">
+        select distinct c.id,c.name
+        from hg_category c join hg_spu p on c.id=p.category_id
+        where p.id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selBrandBySpuIds" resultType="brand">
+        select distinct b.id,b.name
+        from hg_brand b join hg_spu p on b.id=p.brand_id
+        where p.id in
+        <foreach collection="list" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

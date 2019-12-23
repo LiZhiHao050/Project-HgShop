@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lizhihao.hgshop.dao.BrandMapper">
+
+    <select id="selBrand" resultType="brand">
+        SELECT id,name,first_char,deleted_flag FROM hg_brand
+        <where>
+            <if test="name != null and name != ''">
+                AND name like concat('%',#{name},'%')
+            </if>
+            <if test="firstChar != null and firstChar != ''">
+                AND first_char like concat('%',#{firstChar},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getBrandById" resultType="brand">
+        SELECT * FROM hg_brand WHERE id = #{id}
+    </select>
+
+    <update id="delBrand">
+        UPDATE hg_brand SET deleted_flag = 1 WHERE id in ( ${id} )
+    </update>
+
+    <select id="getAllBrands" resultType="brand">
+        SELECT id,name FROM hg_brand WHERE deleted_flag = 0
+    </select>
+
+</mapper>
