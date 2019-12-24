@@ -2,11 +2,13 @@ package com.lizhihao.hgshop.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
 import com.lizhihao.hgshop.dao.CategoryMapper;
 import com.lizhihao.hgshop.pojo.Category;
 import com.lizhihao.hgshop.service.CategoryService;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.List;
 
@@ -20,6 +22,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryMapper categoryMapper;
+
+    @Autowired
+    KafkaTemplate<String, String> kafkaTemplate;
 
     /**
      * 获取列表
@@ -53,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public int addOrUpdCategory(Category category) {
-        int res = 0;
+        /*int res = 0;
 
         String path = "";
 
@@ -77,7 +82,36 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             res = categoryMapper.updCategory(category);
         }
-        return res;
+        return res;*/
+
+        Integer count = null;
+        if (category.getId() == null) {
+            //新增
+            System.out.println("FID:" + category.getParentId());
+            if (category.getParentId() == null) {
+                category.setParentId(0);
+            }
+            count = categoryMapper.addCategory(category);
+            //测试redis用,使用kafka后就没用了
+//			categoryRedisService.addCategory(category, 1);
+            Gson gson = new Gson();
+            //消息:<k,v>对
+            //k:区分是新增/修改/删除
+            //k:1 新增
+            //k:2修改
+            //k:3删除
+            kafkaTemplate.sendDefault("1", gson.toJson(category));
+        } else {
+            //修改
+            count = categoryMapper.updCategory(category);
+            //测试redis用,使用kafka后就没用了
+            //categoryRedisService.addCategory(category, 2);
+            Gson gson = new Gson();
+            kafkaTemplate.sendDefault("2", gson.toJson(category));
+        }
+
+        return count;
+
     }
 
     /**

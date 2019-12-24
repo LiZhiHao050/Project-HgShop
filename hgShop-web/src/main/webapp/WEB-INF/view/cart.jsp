@@ -113,6 +113,12 @@
 				alert('请选中要删除的数据');
 			}
 		}
+		function preOrder(){
+			var ids= $('.ck:checked').map(function(){
+				return this.value;
+			}).get().join();
+			window.location.href='preOrder?ids='+ids;
+		}
 	</script>
 </head>
 
@@ -172,7 +178,7 @@
 				<span><a href="clearCart">清理购物车</a></span>
 			</div>
 			<div class="col-md-8">
-				<span style="float:right" class="jiesuan"><a href="javascript:void(0)" class="submit-btn">去结算</a></span>
+				<span style="float:right" class="jiesuan"><a href="javascript:void(0)" class="submit-btn" onclick="preOrder()">去结算</a></span>
 				<span style="float:right">总价: <span style="color:red">￥<span id="totalPrice">0</span></span></span>
 				<span style="float:right">已选择<span style="color:red" id="total">0</span>件商品</span>
 			</div>

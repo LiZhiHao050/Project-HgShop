@@ -30,4 +30,6 @@ public interface CartMapper {
 
     Cart selectCartByKey(@Param("userId")Integer userId, @Param("skuId")Integer skuId);
 
+    List<Cart> preOrder(@Param("userId") int userId, @Param("ids") Integer[] ids);
+
 }

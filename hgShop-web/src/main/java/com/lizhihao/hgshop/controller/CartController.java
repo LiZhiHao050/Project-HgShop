@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -50,7 +49,7 @@ public class CartController {
 //		BigDecimal totalPrice = new BigDecimal(0);
 
 		list.forEach(c -> {
-			c.setSubPrice(c.getPrice().multiply(new BigDecimal(c.getPnum())));
+			c.setSubPrice(c.getPrice() * c.getPnum());
 //			totalPrice.add(c.getSubPrice());
 		});
 		model.addAttribute("total", list.size());

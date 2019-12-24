@@ -59,5 +59,16 @@
     </select>
 
 
+    <insert id="addCategory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hg_category (parent_id,name,path) VALUES (#{parentId},#{name},#{path})
+    </insert>
+
+    <select id="preOrder" resultType="cart">
+        select * from hg_cart where uid=#{userId} and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
     
 </mapper>

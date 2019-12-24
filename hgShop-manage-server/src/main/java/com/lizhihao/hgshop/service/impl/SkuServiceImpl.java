@@ -177,4 +177,9 @@ public class SkuServiceImpl implements SkuService {
         map.put("specs", specList);
         return map;
     }
+
+    @Override
+    public Sku getSkuById2(Integer skuId) {
+        return skuMapper.selectSkuById2(skuId);
+    }
 }

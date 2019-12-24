@@ -1,7 +1,6 @@
 package com.lizhihao.hgshop.pojo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * @author LZH
@@ -21,8 +20,8 @@ public class Cart implements Serializable {
 
     private String image;
     private String title;
-    private BigDecimal price;
-    private BigDecimal subPrice;
+    private Integer price;
+    private Integer subPrice;
 
 
     public Cart() {
@@ -104,19 +103,19 @@ public class Cart implements Serializable {
         this.title = title;
     }
 
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public BigDecimal getSubPrice() {
+    public Integer getSubPrice() {
         return subPrice;
     }
 
-    public void setSubPrice(BigDecimal subPrice) {
+    public void setSubPrice(Integer subPrice) {
         this.subPrice = subPrice;
     }
 

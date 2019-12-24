@@ -119,4 +119,8 @@
         </where>
     </select>
 
+    <select id="selectSkuById2" resultType="sku">
+		select id,title,image,price from hg_sku where id=#{id}
+	</select>
+
 </mapper>

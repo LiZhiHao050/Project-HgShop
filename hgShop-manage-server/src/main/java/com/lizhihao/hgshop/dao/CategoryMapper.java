@@ -28,7 +28,6 @@ public interface CategoryMapper {
      * @param category
      * @return
      */
-    @Insert("INSERT INTO hg_category (parent_id,name,path) VALUES (#{parentId},#{name},#{path})")
     int addCategory(Category category);
 
     /**

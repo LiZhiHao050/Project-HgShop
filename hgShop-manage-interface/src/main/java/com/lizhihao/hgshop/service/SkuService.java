@@ -27,4 +27,6 @@ public interface SkuService {
 
     Map<String, Object> searchSkuBySpecOptionIds(Integer[] optionIds);
 
+    Sku getSkuById2(Integer skuId);
+
 }

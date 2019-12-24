@@ -23,4 +23,6 @@ public interface CartService {
 
     Cart getCartByKey(Integer userId, Integer skuId);
 
+    List<Cart> preOrder(int i, Integer[] ids);
+
 }

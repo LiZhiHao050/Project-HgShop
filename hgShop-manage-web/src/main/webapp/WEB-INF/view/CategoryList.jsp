@@ -116,7 +116,7 @@
                         <label for="firstChar" class="col-sm-3 control-label">父分类名称</label>
                         <div class="col-sm-9">
                             <input type="hidden" class="form-control" id="parentId" name="parentId">
-                            <input type="text" class="form-control" id="parentName" placeholder="选择父分类">
+                            <input type="text" class="form-control" id="parentName" name="parentName" placeholder="选择父分类">
                             <div id="tree"
                                  style="display: none; position:absolute; z-index:1010; background-color:white;"></div>
                         </div>

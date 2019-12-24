@@ -55,6 +55,9 @@
 	<dubbo:annotation
 		package="com.lizhihao.hgshop.service.impl" />
 
-	<import resource="spring-es.xml"/>
+	<import resource="spring-redis.xml"/>
+
+	<import resource="spring-kafka-producer.xml"/>
+	<import resource="spring-kafka-consumer.xml"/>
 
 </beans>

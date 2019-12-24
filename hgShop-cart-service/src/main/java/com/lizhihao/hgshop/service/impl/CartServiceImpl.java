@@ -81,4 +81,9 @@ public class CartServiceImpl implements CartService {
         return cartMapper.selectCartByKey(userId, skuId);
     }
 
+    @Override
+    public List<Cart> preOrder(int userId, Integer[] ids) {
+        return cartMapper.preOrder(userId, ids);
+    }
+
 }

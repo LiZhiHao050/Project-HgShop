@@ -1,7 +1,6 @@
 package com.lizhihao.hgshop.pojo;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -17,15 +16,15 @@ public class Sku implements Serializable {
     private Integer id;  //id
     private String title;  //标题
     private String sellPoint;  //卖点
-    private BigDecimal price;  //价格
+    private Integer price;  //价格
     private Integer stockCount;  //库存
     private String barcode;  //条形码
     private String image;  //图片
     private String status;  //状态 0:上架 1:下架
     private Date createTime; //创建时间
     private Date updateTime; //修改时间
-    private BigDecimal costPrice; //成本价格
-    private BigDecimal marketPrice; //市场价格
+    private Integer costPrice; //成本价格
+    private Integer marketPrice; //市场价格
     private Integer spuId; //spuId
     private String cartThumbnail; //购物车页面展示的缩略图
 
@@ -37,8 +36,8 @@ public class Sku implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public Sku(Integer id, String title, String sellPoint, BigDecimal price, Integer stockCount, String barcode,
-               String image, String status, Date createTime, Date updateTime, BigDecimal costPrice, BigDecimal marketPrice,
+    public Sku(Integer id, String title, String sellPoint, Integer price, Integer stockCount, String barcode,
+               String image, String status, Date createTime, Date updateTime, Integer costPrice, Integer marketPrice,
                Integer spuId, String cartThumbnail) {
         super();
         this.id = id;
@@ -81,11 +80,11 @@ public class Sku implements Serializable {
         this.sellPoint = sellPoint;
     }
 
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -137,19 +136,19 @@ public class Sku implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public BigDecimal getCostPrice() {
+    public Integer getCostPrice() {
         return costPrice;
     }
 
-    public void setCostPrice(BigDecimal costPrice) {
+    public void setCostPrice(Integer costPrice) {
         this.costPrice = costPrice;
     }
 
-    public BigDecimal getMarketPrice() {
+    public Integer getMarketPrice() {
         return marketPrice;
     }
 
-    public void setMarketPrice(BigDecimal marketPrice) {
+    public void setMarketPrice(Integer marketPrice) {
         this.marketPrice = marketPrice;
     }
 

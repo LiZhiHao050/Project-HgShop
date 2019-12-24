@@ -38,4 +38,7 @@ public interface SkuMapper {
     Sku searchSkuById(Integer id);
 
     Sku searchSkuBySpecOptionIds(Integer[] optionIds);
+
+    Sku selectSkuById2(@Param("id") Integer skuId);
+
 }

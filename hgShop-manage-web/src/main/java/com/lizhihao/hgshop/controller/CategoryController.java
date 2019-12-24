@@ -2,6 +2,7 @@ package com.lizhihao.hgshop.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.lizhihao.hgshop.pojo.Category;
+import com.lizhihao.hgshop.service.CategoryRedisService;
 import com.lizhihao.hgshop.service.CategoryService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ public class CategoryController {
     @Reference(url = "dubbo://localhost:20880", timeout = 5000)
     CategoryService categoryService;
 
+    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    CategoryRedisService categoryRedisService;
+
     /**
      * 获取列表
      * @param model
@@ -36,7 +40,9 @@ public class CategoryController {
      */
     @RequestMapping("categoryList")
     public String categoryList(Model model, Category category, @RequestParam(defaultValue = "1") Integer pageNum) {
-        PageInfo<Category> pageInfo = categoryService.getCategoryList(category, pageNum);
+//        PageInfo<Category> pageInfo = categoryService.getCategoryList(category, pageNum);
+
+        PageInfo<Category> pageInfo = categoryRedisService.list(category, pageNum);
 
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("category", category);
@@ -52,7 +58,8 @@ public class CategoryController {
     @RequestMapping("getCategoryById")
     @ResponseBody
     public Category getCatById(Integer id) {
-        Category catById = categoryService.getCatById(id);
+//        Category catById = categoryService.getCatById(id);
+        Category catById = categoryRedisService.getCategoryById(id);
         return catById;
     }
 
@@ -78,6 +85,8 @@ public class CategoryController {
     public Map<String, String> delCategory(Integer id) {
         Map<String, String> map = new HashMap<>();
         int res = categoryService.delCategory(id);
+        // Redis删除
+        categoryRedisService.deleteCategory(id);
 
         if (res > 0) {
             map.put("code", "20010");
@@ -97,6 +106,7 @@ public class CategoryController {
     @ResponseBody
     public List<Category> getAllCategories() {
         return categoryService.getAllCategories();
+//        return categoryRedisService.getAllCategories();
     }
 
     /**
@@ -107,6 +117,7 @@ public class CategoryController {
     @ResponseBody
     public List<Category> getCategoryTree() {
         List<Category> list = categoryService.getAllCategories();
+//        List<Category> list = categoryRedisService.getAllCategories();
         list.forEach(x -> {
             x.setSelectable(false);
             x.getChilds().forEach(y -> y.setSelectable(false));
