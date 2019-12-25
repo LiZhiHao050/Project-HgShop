@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 public class CartController {
 
-	@Reference(url = "dubbo://localhost:20890", timeout = 5000)
+	@Reference
     CartService cartService;
 
     @RequestMapping("/addCart")

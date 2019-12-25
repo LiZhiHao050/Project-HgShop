@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("spec")
 public class SpecController {
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     SpecService specService;
 
     /**

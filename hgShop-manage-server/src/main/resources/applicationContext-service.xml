@@ -46,9 +46,9 @@
 	<!-- 应用程序 -->
 	<dubbo:application name="HgShop_Manager_Sev" />
 	<!-- 注册中心 采用zookeeper -->
-	<!--<dubbo:registry-->
-		<!--address="zookeeper://127.0.0.1:2181" />-->
-	<dubbo:registry address="N/A" />
+	<dubbo:registry address="zookeeper://192.168.136.128:2181" />
+
+	<!--<dubbo:registry address="N/A" />-->
 	<!-- 通讯协议 -->
 	<dubbo:protocol name="dubbo" port="20880" />
 	<!-- 注解扫描配置 指定了扫描的包 -->

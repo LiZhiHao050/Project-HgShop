@@ -25,13 +25,13 @@ import java.util.Map;
 @Controller
 public class IndexController {
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     CategoryService categoryService;
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     SpuService spuService;
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     SkuService skuService;
 
     /**

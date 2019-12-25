@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.lizhihao.hgshop.pojo.Category;
 import com.lizhihao.hgshop.service.CategoryRedisService;
 import com.lizhihao.hgshop.service.CategoryService;
+import com.lizhihao.hgshop.service.RedisCategoryService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +26,13 @@ import java.util.Map;
 @RequestMapping("category")
 public class CategoryController {
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     CategoryService categoryService;
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
+    RedisCategoryService redisCategoryService;
+
+    @Reference
     CategoryRedisService categoryRedisService;
 
     /**
@@ -40,9 +44,9 @@ public class CategoryController {
      */
     @RequestMapping("categoryList")
     public String categoryList(Model model, Category category, @RequestParam(defaultValue = "1") Integer pageNum) {
-//        PageInfo<Category> pageInfo = categoryService.getCategoryList(category, pageNum);
+        PageInfo<Category> pageInfo = categoryService.getCategoryList(category, pageNum);
 
-        PageInfo<Category> pageInfo = categoryRedisService.list(category, pageNum);
+//        PageInfo<Category> pageInfo = categoryRedisService.list(category, pageNum);
 
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("category", category);
@@ -58,8 +62,8 @@ public class CategoryController {
     @RequestMapping("getCategoryById")
     @ResponseBody
     public Category getCatById(Integer id) {
-//        Category catById = categoryService.getCatById(id);
-        Category catById = categoryRedisService.getCategoryById(id);
+        Category catById = categoryService.getCatById(id);
+//        Category catById = categoryRedisService.getCategoryById(id);
         return catById;
     }
 
@@ -71,8 +75,14 @@ public class CategoryController {
     @RequestMapping("addCategory")
     @ResponseBody
     public boolean addCategory(Category category) {
-        int res = categoryService.addOrUpdCategory(category);
-        return res > 0;
+//        int res = categoryService.addOrUpdCategory(category);
+        if (category.getId() == null) {
+            redisCategoryService.addCategory(category);
+        } else {
+            redisCategoryService.modCategory(category);
+        }
+
+        return true;
     }
 
     /**
@@ -84,11 +94,13 @@ public class CategoryController {
     @ResponseBody
     public Map<String, String> delCategory(Integer id) {
         Map<String, String> map = new HashMap<>();
-        int res = categoryService.delCategory(id);
+        //int res = categoryService.delCategory(id);
         // Redis删除
-        categoryRedisService.deleteCategory(id);
+        // categoryRedisService.deleteCategory(id);
 
-        if (res > 0) {
+        redisCategoryService.delCategory(id.toString());
+
+        if (true) {
             map.put("code", "20010");
             map.put("msg", "删除成功!");
         } else {

@@ -31,8 +31,8 @@
 	<!-- 应用程序名称 -->
 	<dubbo:application name="HgShop_Manager_Web" />
 	<!-- 注册中心 -->
-	<!--<dubbo:registry-->
-		<!--address="zookeeper://127.0.0.1:2181" />-->
+	<dubbo:registry address="zookeeper://192.168.136.128:2181" />
+
 	<!-- 配置扫描包的路径 -->	
 	<dubbo:annotation package="com.lizhihao.hgshop.controller"/>
 </beans>

@@ -27,12 +27,12 @@
 
             <div class="form-group">
                 <label for="username">用户名:</label>
-                <input type="text" id="username" class="form-control" placeholder="请输入用户名" required autofocus>
+                <input type="text" id="username" name="user" class="form-control" placeholder="请输入用户名" required autofocus>
             </div>
 
             <div class="form-group">
                 <label for="password">密码:</label>
-                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                <input type="password" id="password" name="pwd" class="form-control" placeholder="Password" required>
             </div>
 
             <div class="checkbox">

@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("brand")
 public class BrandController {
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     BrandService brandService;
 
     /**

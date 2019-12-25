@@ -27,7 +27,7 @@ import java.util.UUID;
 @RequestMapping("sku")
 public class SkuController {
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     SkuService skuService;
 
     /**

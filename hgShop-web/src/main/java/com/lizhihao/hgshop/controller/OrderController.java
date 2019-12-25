@@ -26,13 +26,13 @@ import java.util.Map;
 @Controller
 public class OrderController {
 
-    @Reference(url="dubbo://localhost:20880",timeout=5000)
+    @Reference
     private OrderService orderService;
 
-    @Reference(url="dubbo://localhost:20890",timeout=5000)
+    @Reference
     private CartService cartService;
 
-    @Reference(url="dubbo://localhost:20880",timeout=5000)
+    @Reference
     private SkuService skuService;
 
     /**

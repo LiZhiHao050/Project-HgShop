@@ -28,7 +28,7 @@ import java.util.List;
 @RequestMapping("spu")
 public class SpuController {
 
-    @Reference(url = "dubbo://localhost:20880", timeout = 5000)
+    @Reference
     SpuService spuService;
 
     /**

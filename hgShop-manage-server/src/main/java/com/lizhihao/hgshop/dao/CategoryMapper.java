@@ -43,7 +43,7 @@ public interface CategoryMapper {
      * @param category
      * @return
      */
-    @Update("UPDATE hg_category SET name = #{name},parent_id = #{parentId},#{path}=#{path} WHERE id = #{id}")
+    @Update("UPDATE hg_category SET name = #{name},parent_id = #{parentId} WHERE id = #{id}")
     int updCategory(Category category);
 
     /**
